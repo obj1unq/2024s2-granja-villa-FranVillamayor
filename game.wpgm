@@ -1,8 +1,11 @@
+import aspersores.*
 import wollok.game.*
 import hector.*
 import cultivos.*
+import mercados.*
 
 program farmville {
+	var mercados = #{new Mercado(), new Mercado(position = game.at(5, 2))} 
 	//  CONFIG	
 	game.title("La granja de Héctor")
 	game.height(10)
@@ -11,7 +14,19 @@ program farmville {
 
 	//  VISUALES
  	game.addVisualCharacter(hector)
- 	game.addVisual(new Maiz()) // Se agrega a modo de prueba
+	mercados.forEach({mercado => game.addVisual(mercado)})
+	
+	//ACCIONES
+	keyboard.m().onPressDo{hector.sembrarMaiz()}
+	keyboard.t().onPressDo{hector.sembrarTrigo()}
+	keyboard.o().onPressDo{hector.sembrarTomato()}
+	keyboard.r().onPressDo({hector.regar()})
+	keyboard.c().onPressDo({hector.cosechar()})
+	keyboard.space().onPressDo({game.say(hector, "Oro: " + hector.oro() +" "+ "Plantas: " + hector.plantasCosechadas())})
+	keyboard.v().onPressDo({hector.vender(mercados)})
+	keyboard.a().onPressDo({hector.colocaAspersor()})
+	game.onTick(1000, "Activa Aspersor", {hector.activarAspersores()}) 
+
  	
  	//  COMIENZA
 	game.start()
