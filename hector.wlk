@@ -11,9 +11,9 @@ object hector {
 	var property oro = 0
 	const property aspersores = #{}
 
-	/*method activarAspersores() {
-		aspersores.forEach({aspersor => aspersor.regarPlantas()})
-	}*/
+	method activarAspersores() {
+		aspersores.forEach({aspersor => aspersor.regarPlantas(cultivos)})
+	}
 
 	method colocaAspersor() {
 		self.dejarAspersor(new Aspersor(position = self.position()))
@@ -24,9 +24,22 @@ object hector {
 		aspersores.add(aspersor)
 	}
 
-	method vender() {
-		oro =+ plantasCosechadas.sum({planta => planta.oroPorVenta()})
+	method vender(listaDeMercados) {
+
+		self.verificarMercado(listaDeMercados)
+		self.hayMercado(listaDeMercados).forEach({mercado => mercado.comprar(plantasCosechadas)})
+		oro += plantasCosechadas.sum({planta => planta.oroPorVenta()})
 		plantasCosechadas.clear()
+	}
+
+	method verificarMercado(lista) {
+		if (self.hayMercado(lista).isEmpty()){
+			self.error("Solo puedo vender si estoy en el mercado")
+		}
+	}
+
+	method hayMercado(lista) {
+		return  lista.filter({mercado => mercado.position() == self.position()})
 	}
 
 	method cosechar() {

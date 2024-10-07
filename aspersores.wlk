@@ -8,93 +8,31 @@ import cultivos.*
 
 class Aspersor {
     var property position = game.at(1, 1)
-    const property posicionesLimitrofes = #{}
+    const property posiciones = #{}
 
-    /*method cargarPosiciones() {
-        posicionesLimitrofes.add(arriba)
-        posicionesLimitrofes.add(abajo) 
-        posicionesLimitrofes.add(derecha)
-        posicionesLimitrofes.add(izquierda)
-    }*/
+    method initialize() {
+        self.cargarPosiciones()
+    }
 
     method image() {
         return "aspersor.png"
     }
-}
-    /*method regarPlantas() { 
-        self.cargarPosiciones()
-        posicionesLimitrofes.forEach({posicion => posicion.cargarObjetos(self)})
-        posicionesLimitrofes.forEach({posicion => posicion.activarRiego()})
-    }
-}
 
-object arriba {
-
-    const property objetosEnPosicion = #{} 
-
-    method cargarObjetos(objeto) {
-        objetosEnPosicion.add({game.getObjectsIn(self.position(objeto))})
-    }
-    method position(objeto) {
-      return game.at(objeto.position(), objeto.position() + 10)
+    method regarPlantas(listaDeCultivos) {
+        posiciones.forEach({pos => self.regarPosicion(listaDeCultivos, pos)}) 
     }
 
-    method activarRiego() {
-        objetosEnPosicion.crecer()
+    method regarPosicion(listaDeCultivos, pos) {
+        listaDeCultivos.filter({planta => planta.position() == pos})
+                        .forEach({planta => planta.crecer()})
     }
-  
-}
 
-object abajo {
-    const property objetosEnPosicion = #{}
-
-    method cargarObjetos(objeto) {
-        objetosEnPosicion.add({game.getObjectsIn(self.position(objeto))})
+    method cargarPosiciones() {
+        posiciones.add(position.up(1))
+        posiciones.add(position.right(1))
+        posiciones.add(position.left(1))
+        posiciones.add(position.down(1))
       
     }
-
-    method position(objeto) {
-      return game.at(objeto.position(), objeto.position() - 10)
-    }
-
-    method activarRiego() {
-        objetosEnPosicion.crecer()
-      
-    }
-  
 }
-object derecha {
-    const property objetosEnPosicion = #{}
 
-    method cargarObjetos(objeto) {
-        objetosEnPosicion.add({game.getObjectsIn(self.position(objeto))}) 
-    }
-
-    method position(objeto) {
-      return game.at(objeto.position() + 10, objeto.position())
-    }
-
-    method activarRiego() {
-        objetosEnPosicion.crecer()
-      
-    }
-  
-}
-object izquierda {
-    const property objetosEnPosicion = #{}
-
-    method cargarObjetos(objeto) {
-        objetosEnPosicion.add({game.getObjectsIn(self.position(objeto))})
-    }
-
-    method position(objeto) {
-      return game.at(objeto.position() - 10, objeto.position())
-    }
-
-    method activarRiego() {
-        objetosEnPosicion.crecer()
-      
-    }
-  
-}
-*/
